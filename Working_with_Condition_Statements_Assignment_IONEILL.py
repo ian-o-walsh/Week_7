@@ -56,3 +56,16 @@ underpaid_employees = []
 for total in total_pay_with_benefits:
     if 28.15 <= total <= 30.65:
         underpaid_employees.append(round(total, 2))
+
+# Calculate new salary after company raise
+salaries_after_raise = []
+for wage in hourly_wages:
+    if 22.0 <= wage <= 24.0:
+        new_wage = wage * 1.05
+    elif 24.0 < wage <= 26.0:
+        new_wage = wage * 1.04
+    elif 26.0 < wage <= 28.0:
+        new_wage = wage * 1.03
+    else:
+        new_wage = wage * 1.02
+    salaries_after_raise.append(round(new_wage, 2))
