@@ -42,3 +42,6 @@ while i < len(raw_data):
             hourly_wages.append(value)
 
     i += 1
+
+# Calculate total pay including 30% benefits
+total_pay_with_benefits = [wage * 1.3 for wage in hourly_wages]
