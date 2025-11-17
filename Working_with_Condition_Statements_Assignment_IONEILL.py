@@ -17,7 +17,7 @@ raw_data = [
     22.65, 1152, "David Toma"
 ]
 
-# Extract unique employee IDs, names, and wages (no duplicates)
+# Extract unique employee IDs, names, and wages
 employee_ids = []
 employee_names = []
 hourly_wages = []
@@ -73,7 +73,7 @@ for wage in hourly_wages:
         new_wage = wage * 1.02
     company_raises.append(round(new_wage, 2))
 
-# Flags employees who earn under $25/hr base, get less than 4% raise and have total pay with benefits under $32/hr and appear more than once in raw data
+# Flags employees who earn under $25 per hour base, get less than 4% raise and have total pay with benefits under $32 per hour and appear more than once in the raw data
 print("\nEmployees who may need special attention:")
 for i in range(len(hourly_wages)):
     base_wage = hourly_wages[i]
