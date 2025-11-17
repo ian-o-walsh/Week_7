@@ -17,48 +17,51 @@ raw_data = [
     22.65, 1152, "David Toma"
 ]
 
-# Extract unique employee info from the data
+# Extract unique employee IDs, names, and wages (no duplicates)
 employee_ids = []
 employee_names = []
 hourly_wages = []
+seen_ids = set()
 
 i = 0
 while i < len(raw_data):
-    value = raw_data[i]
+    # Looks for valid patterns
+    if (i + 2 < len(raw_data) and
+        isinstance(raw_data[i], int) and
+        isinstance(raw_data[i+1], str) and
+        isinstance(raw_data[i+2], (int, float)) and
+        not isinstance(raw_data[i+2], bool)):
+        
+        emp_id = raw_data[i]
+        name = raw_data[i+1]
+        wage = float(raw_data[i+2])
+        
+        # Only adds if this employee ID hasn't been seen before
+        if emp_id not in seen_ids:
+            employee_ids.append(emp_id)
+            employee_names.append(name)
+            hourly_wages.append(wage)
+            seen_ids.add(emp_id)
+        
+        i += 3
+    else:
+        i += 1
 
-    # Get employee ID
-    if isinstance(value, int):
-        if value not in employee_ids:
-            employee_ids.append(value)
+# Calculate total hourly rate with 30% benefits and check budget
+total_hourly_rate = [wage * 1.3 for wage in hourly_wages]
 
-    # Get employee name
-    elif isinstance(value, str) and value not in ["True", "False"]:
-        if value not in employee_names:
-            employee_names.append(value)
-
-    # Get hourly wage (numbers with decimals)
-    elif isinstance(value, float):
-        if value not in hourly_wages:
-            hourly_wages.append(value)
-
-    i += 1
-
-# Calculate total pay including 30% benefits
-total_pay_with_benefits = [wage * 1.3 for wage in hourly_wages]
-
-# Check for anyone over budget ($37.30 total is limit)
-highest_total_pay = max(total_pay_with_benefits)
+highest_total_pay = max(total_hourly_rate)
 if highest_total_pay > 37.30:
     print(f"Budget Alert: Someone earns ${highest_total_pay:.2f}/hr with benefits — possible budget concern!")
 
 # Find underpaid employees (pay between $28.15 and $30.65)
-underpaid_employees = []
-for total in total_pay_with_benefits:
+underpaid_salaries = []
+for total in total_hourly_rate:
     if 28.15 <= total <= 30.65:
-        underpaid_employees.append(round(total, 2))
+        underpaid_salaries.append(round(total, 2))
 
-# Calculate new salary after company raise
-salaries_after_raise = []
+# Apply tiered raises and store in company_raises
+company_raises = []
 for wage in hourly_wages:
     if 22.0 <= wage <= 24.0:
         new_wage = wage * 1.05
@@ -68,19 +71,17 @@ for wage in hourly_wages:
         new_wage = wage * 1.03
     else:
         new_wage = wage * 1.02
-    salaries_after_raise.append(round(new_wage, 2))
+    company_raises.append(round(new_wage, 2))
 
-# Flags low-paid employees with <4% raise, total<32, and duplicate raw entries
+# Flags employees who earn under $25/hr base, get less than 4% raise and have total pay with benefits under $32/hr and appear more than once in raw data
 print("\nEmployees who may need special attention:")
 for i in range(len(hourly_wages)):
     base_wage = hourly_wages[i]
-    total_with_benefits = total_pay_with_benefits[i]
-    new_wage = salaries_after_raise[i]
+    total_with_benefits = total_hourly_rate[i]
+    new_wage = company_raises[i]
     raise_percent = (new_wage / base_wage - 1) * 100
-    name = employee_names[i] if i < len(employee_names) else "Name Missing"
+    name = employee_names[i]
 
-    if (base_wage < 25.0 and 
-        raise_percent < 4.0 and 
-        total_with_benefits < 32.0 and 
-        raw_data.count(name) > 1):
-        print(f" → {name}: ${base_wage}/hr → ${new_wage} ({raise_percent:.1f}% raise) — low pay + low raise + duplicate entry")
+    if (base_wage < 25.0 and raise_percent < 4.0 and total_with_benefits < 32.0 and raw_data.count(name) > 1):
+        print(f" → {name}: ${base_wage}/hr → ${new_wage} ({raise_percent:.1f}% raise) "
+              f"— low pay + low raise + low total + duplicate entry in data")
