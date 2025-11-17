@@ -45,3 +45,14 @@ while i < len(raw_data):
 
 # Calculate total pay including 30% benefits
 total_pay_with_benefits = [wage * 1.3 for wage in hourly_wages]
+
+# Check for anyone over budget ($37.30 total is limit)
+highest_total_pay = max(total_pay_with_benefits)
+if highest_total_pay > 37.30:
+    print(f"Budget Alert: Someone earns ${highest_total_pay:.2f}/hr with benefits — possible budget concern!")
+
+# Find underpaid employees (pay between $28.15 and $30.65)
+underpaid_employees = []
+for total in total_pay_with_benefits:
+    if 28.15 <= total <= 30.65:
+        underpaid_employees.append(round(total, 2))
