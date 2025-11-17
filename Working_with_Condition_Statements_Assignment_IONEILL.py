@@ -69,3 +69,18 @@ for wage in hourly_wages:
     else:
         new_wage = wage * 1.02
     salaries_after_raise.append(round(new_wage, 2))
+
+# Flags low-paid employees with <4% raise, total<32, and duplicate raw entries
+print("\nEmployees who may need special attention:")
+for i in range(len(hourly_wages)):
+    base_wage = hourly_wages[i]
+    total_with_benefits = total_pay_with_benefits[i]
+    new_wage = salaries_after_raise[i]
+    raise_percent = (new_wage / base_wage - 1) * 100
+    name = employee_names[i] if i < len(employee_names) else "Name Missing"
+
+    if (base_wage < 25.0 and 
+        raise_percent < 4.0 and 
+        total_with_benefits < 32.0 and 
+        raw_data.count(name) > 1):
+        print(f" → {name}: ${base_wage}/hr → ${new_wage} ({raise_percent:.1f}% raise) — low pay + low raise + duplicate entry")
