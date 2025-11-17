@@ -35,3 +35,10 @@ while i < len(raw_data):
     elif isinstance(value, str) and value not in ["True", "False"]:
         if value not in employee_names:
             employee_names.append(value)
+
+    # Get hourly wage (numbers with decimals)
+    elif isinstance(value, float):
+        if value not in hourly_wages:
+            hourly_wages.append(value)
+
+    i += 1
