@@ -17,3 +17,21 @@ raw_data = [
     22.65, 1152, "David Toma"
 ]
 
+# Extract unique employee info from the data
+employee_ids = []
+employee_names = []
+hourly_wages = []
+
+i = 0
+while i < len(raw_data):
+    value = raw_data[i]
+
+    # Get employee ID
+    if isinstance(value, int):
+        if value not in employee_ids:
+            employee_ids.append(value)
+
+    # Get employee name
+    elif isinstance(value, str) and value not in ["True", "False"]:
+        if value not in employee_names:
+            employee_names.append(value)
