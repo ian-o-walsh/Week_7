@@ -1,6 +1,6 @@
 # Ian O'Neill
 # IT-410
-# Week 7 - Working with Condition Statements Assignment
+# Week 8 - Dictionaries Assignment
 # Professor Charnesky
 
 # Original data from Excel export
