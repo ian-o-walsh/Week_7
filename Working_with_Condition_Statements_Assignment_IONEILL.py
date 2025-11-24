@@ -100,3 +100,8 @@ for i in range(len(employee_ids)):
     }
 
     employee_database.append(record)
+
+# Print the entire final database
+print("Final Employee Database:")
+for entry in employee_database:
+    print(entry)
