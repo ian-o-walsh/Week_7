@@ -83,5 +83,20 @@ for i in range(len(hourly_wages)):
     name = employee_names[i]
 
     if (base_wage < 25.0 and raise_percent < 4.0 and total_with_benefits < 32.0 and raw_data.count(name) > 1):
-        print(f" → {name}: ${base_wage}/hr → ${new_wage} ({raise_percent:.1f}% raise) "
+        print(f" -> {name}: ${base_wage}/hr -> ${new_wage} ({raise_percent:.1f}% raise) "
               f"— low pay + low raise + low total + duplicate entry in data")
+        
+# final list to hold dictionary records
+employee_database = []
+
+# Loops through the lists and combine into dictionaries
+for i in range(len(employee_ids)):
+    record = {
+        "id": employee_ids[i],
+        "name": employee_names[i],
+        "hourly_wage": hourly_wages[i],
+        "total_with_benefits": round(total_hourly_rate[i], 2),
+        "new_raise_wage": company_raises[i]
+    }
+
+    employee_database.append(record)
